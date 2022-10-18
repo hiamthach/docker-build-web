@@ -1,0 +1,31 @@
+@use "../../assets/styles/" as *;
+
+.cus-btn {
+  background-color: $green-color;
+  border: none;
+  outline: none;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: color 0.5s linear;
+  &:hover {
+    box-shadow: $btn-box-shadow;
+  }
+
+  &__red {
+    background-color: $red-color;
+    border: none;
+    outline: none;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: color 0.5s linear;
+    margin-right: 12px;
+
+    &:hover {
+      box-shadow: $btn-box-shadow;
+    }
+  }
+}

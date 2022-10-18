@@ -1,0 +1,13 @@
+@use "../../assets/styles/" as *;
+
+.screen-canvas {
+  background-color: $light-color;
+  height: 100vh;
+
+  display: flex;
+  padding: 60px;
+  gap: 30px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+}

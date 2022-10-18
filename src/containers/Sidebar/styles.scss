@@ -1,0 +1,20 @@
+@use "../../assets/styles/" as *;
+
+.sidebar {
+  height: 100vh;
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+  padding: 32px 0;
+  &-add {
+    text-align: right;
+    padding: 0 12px;
+    margin-bottom: 16px;
+  }
+}
+
+.ant-popover-inner-content {
+  padding: 0 !important;
+}
+
+.ant-menu-inline .ant-menu-item:not(:last-child) {
+  margin-bottom: 0 !important;
+}
