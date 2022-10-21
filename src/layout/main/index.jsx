@@ -12,9 +12,11 @@ const MainLayout = () => {
   return (
     <div className="main-layout">
       <Row>
+        {/* Layout Sidebar */}
         <Col span={4}>
           <Sidebar />
         </Col>
+        {/* Layout Trang để kéo thả */}
         <Col span={20}>
           <ScreenCanvas />
         </Col>

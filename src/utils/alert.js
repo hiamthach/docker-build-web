@@ -8,6 +8,7 @@ const swalWithBootstrapButtons = Swal.mixin({
   buttonsStyling: false,
 });
 
+//Thông báo Delete All
 export const alertConfirmation = (triggerAction) => {
   swalWithBootstrapButtons
     .fire({

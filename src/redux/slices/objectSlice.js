@@ -7,7 +7,7 @@ const objectSlice = createSlice({
   initialState: {
     status: "idle",
     objectList: [],
-    edges: [],
+    edges: [], // Hiểu là connections
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -51,6 +51,7 @@ export const updateObjectThunk = createAsyncThunk(
 
     const newList = [...objectList];
 
+    //Tìm object cần cập nhật
     const findObject = newList.findIndex((object) => object.id === data.id);
 
     const newData = {

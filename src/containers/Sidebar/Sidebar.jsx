@@ -1,4 +1,4 @@
-import React, { useId, useState } from "react";
+import React, { useState } from "react";
 
 import "./styles.scss";
 
@@ -32,6 +32,7 @@ const Sidebar = () => {
 
   const [popOpen, setPopOpen] = useState(false);
 
+  // Hàm để tạo ra các Item của Menu
   function getItem(label, key, icon, children, type, style) {
     return {
       key,
@@ -43,6 +44,7 @@ const Sidebar = () => {
     };
   }
 
+  //Hàm để render Menu
   const renderMenuObject = () => {
     const objectsMapped = objectList.map((object) =>
       getItem(object.name, object.id)
@@ -68,11 +70,13 @@ const Sidebar = () => {
     return list;
   };
 
+  //Render các Type lúc Add
   const renderMenuType = () => {
     const list = listType.map((type) => getItem(type.name, type.key));
     return list;
   };
 
+  // Khi click vào các nút của Sidebar như là Delete All hay Export
   const onClick = (e) => {
     switch (e.key) {
       case "delete":
@@ -88,7 +92,9 @@ const Sidebar = () => {
     }
   };
 
+  // Xử lý lúc add
   const onAddClick = (e) => {
+    //Tạo ra 1 id ngẫu nhiên độ dài 6
     const id = uuidv4().slice(0, 6);
     const data = {
       type: e.key,
@@ -119,6 +125,7 @@ const Sidebar = () => {
   return (
     <div className="sidebar">
       <div className="sidebar-add">
+        {/* Nút Add */}
         <Popover
           placement="rightTop"
           content={addContent}
@@ -136,6 +143,7 @@ const Sidebar = () => {
       </div>
 
       <div className="sidebar-menu">
+        {/* Danh sách Objects */}
         <Menu
           theme="dark"
           onClick={onClick}

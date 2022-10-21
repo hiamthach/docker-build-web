@@ -2,6 +2,7 @@ import routerImg from "../assets/img/router.png";
 import switchImg from "../assets/img/switch.png";
 import endDeviceImg from "../assets/img/pc.png";
 
+//Danh sách các loại object
 export const listType = [
   {
     key: "router",
@@ -20,6 +21,7 @@ export const listType = [
   },
 ];
 
+//Hiển thị icon theo object type
 export const renderIcon = (key) => {
   switch (key) {
     case "router":

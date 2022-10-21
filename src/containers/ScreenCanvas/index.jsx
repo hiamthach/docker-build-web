@@ -31,6 +31,7 @@ import {
 
 const initialEdges = [];
 
+//Customize Node
 const nodeColor = (node) => {
   switch (node.type) {
     case "ObjectItem":
@@ -52,7 +53,7 @@ const connectionLineStyle = { stroke: "#1890ff" };
 
 const ScreenCanvas = () => {
   const [nodes, setNodes] = useState([]);
-  const [edges, setEdges] = useState(initialEdges);
+  const [edges, setEdges] = useState(initialEdges); // Edges đc hiểu là Connections
 
   const dispatch = useDispatch();
   const reactFlowInstance = useReactFlow();
@@ -61,7 +62,9 @@ const ScreenCanvas = () => {
   const nodeTypes = useMemo(() => ({ ObjectItem: ObjectItem }), []);
   const { objectList } = useSelector((state) => state.objects);
 
+  //Xử lý kéo thả node
   const onNodesChange = useCallback((changes) => {
+    //Khi kéo xong sẽ thêm vào objectList trên Redux
     if (changes[0].dragging === false) {
       const node = reactFlowInstance.getNode(changes[0].id);
       dispatch(
@@ -73,6 +76,7 @@ const ScreenCanvas = () => {
     }
     return setNodes((nds) => applyNodeChanges(changes, nds));
   }, []);
+  //Xử lý connection
   const onEdgesChange = useCallback((changes) => {
     setEdges((eds) => applyEdgeChanges(changes, eds));
   }, []);
@@ -80,6 +84,7 @@ const ScreenCanvas = () => {
     return setEdges((eds) => addEdge(params, eds));
   }, []);
 
+  //Xử lý các connect
   const onEdgeUpdateStart = useCallback(() => {
     edgeUpdateSuccessful.current = false;
   }, []);
@@ -97,6 +102,7 @@ const ScreenCanvas = () => {
     edgeUpdateSuccessful.current = true;
   }, []);
 
+  //Hàm in object ra màn hình
   const renderObject = (objectList) => {
     return objectList.map((object) => {
       return {
@@ -115,21 +121,23 @@ const ScreenCanvas = () => {
     });
   };
 
+  //Khi có sự thay đổi của danh sách object thì render lại object
   useEffect(() => {
     setNodes(renderObject(objectList));
   }, [objectList]);
 
+  //Khi có sự thay đổi của các connection thì cập nhật lên store chung
   useEffect(() => {
     dispatch(updateEdgesThunk(edges));
   }, [edges]);
 
   return (
     <div className="screen-canvas">
+      {/* Phần ReactFlow này có thể tham khảo thêm ở Link mình cập nhật ở trang README */}
       <ReactFlow
         nodes={nodes}
         edges={edges}
         defaultEdgeOptions={edgeOptions}
-        // edgeTypes={edgeTypes}
         onEdgesChange={onEdgesChange}
         onNodesChange={onNodesChange}
         onConnect={onConnect}
@@ -142,6 +150,7 @@ const ScreenCanvas = () => {
       >
         <Background variant="lines" color="#ccc" />
         <Controls />
+        {/* MiniMap dưới góc phải */}
         <MiniMap nodeColor={nodeColor} nodeStrokeWidth={3} />
       </ReactFlow>
     </div>

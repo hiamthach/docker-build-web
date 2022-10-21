@@ -19,15 +19,16 @@ import {
 } from "../../redux/slices/objectSlice";
 
 //React flow
-import { Handle, Position } from "reactflow";
+import { Handle } from "reactflow";
 
 const ObjectItem = ({ data }) => {
-  const [popOpen, setPopOpen] = useState(false);
+  const [popOpen, setPopOpen] = useState(false); // Trạng thái mở của Pop khi mà mình nhấn chuột phải
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [status, setStatus] = useState(data.status);
+  const [status, setStatus] = useState(data.status); //Trạng thái của Object(loading: sẽ chỉnh được tên, idle: thì bình thường)
   const [nameValue, setNameValue] = useState(data.name);
   const dispatch = useDispatch();
 
+  //Khi click chuột phải sẽ đổi trạng thái của pop
   const handleRightMouse = (e) => {
     e.preventDefault();
     setPopOpen(true);
@@ -37,25 +38,30 @@ const ObjectItem = ({ data }) => {
     setPopOpen(open);
   };
 
+  //Khi click delete sẽ xử dụng hàm thunk trên store để xóa object đi
   const handleDelete = () => {
     dispatch(deleteObjectThunk(data.id));
   };
 
+  //Khi click configure sẽ mở modal configure lên
   const handleConfigure = () => {
     setIsModalOpen(true);
   };
 
+  //Khi đổi tên
   const handleInputChange = (e) => {
     e.stopPropagation();
     setNameValue(e.target.value);
   };
 
+  //Xử lý hành động khi double click sẽ đổi trạng thái của object sang loading để chỉnh sửa
   const handleDblClick = () => {
     if (status !== "loading") {
       setStatus("loading");
     }
   };
 
+  //Xử lý khi người dùng click Enter hoặc click trỏ chuột ra ngoài sẽ cập nhật tên Object
   const handleDoneInput = (e) => {
     if (e.key === "Enter" || e.type === "blur") {
       dispatch(
@@ -69,6 +75,7 @@ const ObjectItem = ({ data }) => {
     }
   };
 
+  //Nội dung của Pop
   const PopoverContent = () => {
     return (
       <div className="object-item__popover">
@@ -94,6 +101,10 @@ const ObjectItem = ({ data }) => {
 
   return (
     <>
+      {/* Tất cả các phần Handle này là các dấu chấm để kết nối thì mỗi dấu sẽ có position.
+        Handle nào có type="target" có nghĩa là hàm đó có thể kéo vào.
+        Xem thêm Handle ở Link React Flow ở trang README 
+      */}
       <Handle
         isConnectable={true}
         position="top"
@@ -141,6 +152,20 @@ const ObjectItem = ({ data }) => {
         id={data.id + "right"}
         style={{ width: "10px", height: "10px", background: "#1890ff" }}
       />
+      <Handle
+        isConnectable={true}
+        position="bottom"
+        id={data.id + "bot"}
+        style={{ width: "10px", height: "10px", background: "#1890ff" }}
+      />
+      <Handle
+        type="target"
+        isConnectable={true}
+        position="bottom"
+        id={data.id + "bot"}
+        style={{ width: "10px", height: "10px", background: "#1890ff" }}
+      />
+
       <div className="object-item" onContextMenu={handleRightMouse}>
         <Popover
           placement="rightTop"
@@ -177,19 +202,6 @@ const ObjectItem = ({ data }) => {
           data={data}
         />
       )}
-      <Handle
-        isConnectable={true}
-        position="bottom"
-        id={data.id + "bot"}
-        style={{ width: "10px", height: "10px", background: "#1890ff" }}
-      />
-      <Handle
-        type="target"
-        isConnectable={true}
-        position="bottom"
-        id={data.id + "bot"}
-        style={{ width: "10px", height: "10px", background: "#1890ff" }}
-      />
     </>
   );
 };
