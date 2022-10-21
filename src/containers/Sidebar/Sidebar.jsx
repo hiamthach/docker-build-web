@@ -32,13 +32,14 @@ const Sidebar = () => {
 
   const [popOpen, setPopOpen] = useState(false);
 
-  function getItem(label, key, icon, children, type) {
+  function getItem(label, key, icon, children, type, style) {
     return {
       key,
       icon,
       children,
       label,
       type,
+      style,
     };
   }
 
@@ -49,8 +50,19 @@ const Sidebar = () => {
 
     const list = [
       getItem("Objects", "objects", null, objectsMapped),
-      getItem("Delete All Objects", "delete", <DeleteOutlined />),
-      getItem("Export", "export", <ExportOutlined />),
+      getItem(
+        "Delete All Objects",
+        "delete",
+        <DeleteOutlined />,
+        null,
+        "danger",
+        {
+          color: "#dc3545",
+        }
+      ),
+      getItem("Export", "export", <ExportOutlined />, null, null, {
+        color: "#14b8a6",
+      }),
     ];
 
     return list;
@@ -77,7 +89,7 @@ const Sidebar = () => {
   };
 
   const onAddClick = (e) => {
-    const id = uuidv4();
+    const id = uuidv4().slice(0, 6);
     const data = {
       type: e.key,
       name: id,
@@ -125,6 +137,7 @@ const Sidebar = () => {
 
       <div className="sidebar-menu">
         <Menu
+          theme="dark"
           onClick={onClick}
           defaultOpenKeys={["objects"]}
           mode="inline"

@@ -5,6 +5,7 @@ const objectSlice = createSlice({
   initialState: {
     status: "idle",
     objectList: [],
+    edges: [],
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -29,7 +30,13 @@ const objectSlice = createSlice({
 export default objectSlice;
 
 export const addObjectThunk = createAsyncThunk("object/add", async (data) => {
-  return data;
+  return {
+    ...data,
+    position: {
+      x: 100,
+      y: 100,
+    },
+  };
 });
 
 export const updateObjectThunk = createAsyncThunk(
@@ -43,9 +50,8 @@ export const updateObjectThunk = createAsyncThunk(
 
     const newData = {
       ...newList[findObject],
-      configure: data.configure,
+      ...data,
     };
-
     newList[findObject] = newData;
 
     return newList;
