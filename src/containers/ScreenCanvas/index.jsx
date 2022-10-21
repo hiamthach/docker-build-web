@@ -39,6 +39,7 @@ const nodeColor = (node) => {
 
 const edgeOptions = {
   animated: true,
+  type: "straight",
   style: {
     stroke: "#1890ff",
   },
@@ -121,6 +122,7 @@ const ScreenCanvas = () => {
         nodes={nodes}
         edges={edges}
         defaultEdgeOptions={edgeOptions}
+        // edgeTypes={edgeTypes}
         onEdgesChange={onEdgesChange}
         onNodesChange={onNodesChange}
         onConnect={onConnect}
