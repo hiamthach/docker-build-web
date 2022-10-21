@@ -24,7 +24,10 @@ import ReactFlow, {
 } from "reactflow";
 import "reactflow/dist/style.css";
 
-import { updateObjectThunk } from "../../redux/slices/objectSlice";
+import {
+  updateObjectThunk,
+  updateEdgesThunk,
+} from "../../redux/slices/objectSlice";
 
 const initialEdges = [];
 
@@ -116,6 +119,10 @@ const ScreenCanvas = () => {
     setNodes(renderObject(objectList));
   }, [objectList]);
 
+  useEffect(() => {
+    dispatch(updateEdgesThunk(edges));
+  }, [edges]);
+
   return (
     <div className="screen-canvas">
       <ReactFlow
@@ -133,7 +140,7 @@ const ScreenCanvas = () => {
         onEdgeUpdateStart={onEdgeUpdateStart}
         onEdgeUpdateEnd={onEdgeUpdateEnd}
       >
-        <Background variant="lines" />
+        <Background variant="lines" color="#ccc" />
         <Controls />
         <MiniMap nodeColor={nodeColor} nodeStrokeWidth={3} />
       </ReactFlow>

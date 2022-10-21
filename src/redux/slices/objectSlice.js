@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
+import Swal from "sweetalert2";
+
 const objectSlice = createSlice({
   name: "objectSlice",
   initialState: {
@@ -23,6 +25,9 @@ const objectSlice = createSlice({
       })
       .addCase(updateObjectThunk.fulfilled, (state, { payload }) => {
         state.objectList = payload;
+      })
+      .addCase(updateEdgesThunk.fulfilled, (state, { payload }) => {
+        state.edges = payload;
       });
   },
 });
@@ -69,11 +74,43 @@ export const deleteAllThunk = createAsyncThunk(
   }
 );
 
+export const updateEdgesThunk = createAsyncThunk(
+  "object/updateEdges",
+  async (data) => {
+    if (data.length > 0) {
+      return data.map((edge) => {
+        return {
+          from: edge.source,
+          to: edge.target,
+        };
+      });
+    } else {
+      return [];
+    }
+  }
+);
+
 export const exportThunk = createAsyncThunk(
   "objectSlice/exportThunk",
   async (data, thunkAPI) => {
     const objects = thunkAPI.getState().objects.objectList;
-    console.log(objects);
+    const edges = thunkAPI.getState().objects.edges;
+    console.log("Objects: ", objects);
+    console.log("Connections: ", edges);
+    Swal.fire(
+      "Export Success",
+      `Objects: ${
+        objects.length > 0 ? objects.map((object) => object.name).join(", ") : 0
+      }
+      <br>
+      Connections: ${
+        edges.length > 0
+          ? edges.map((edge) => `${edge.from} - ${edge.to}`).join(", ")
+          : 0
+      }
+      `,
+      "success"
+    );
     return data;
   }
 );

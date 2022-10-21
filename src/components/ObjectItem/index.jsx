@@ -95,7 +95,7 @@ const ObjectItem = ({ data }) => {
   return (
     <>
       <Handle
-        type="target"
+        isConnectable={true}
         position="top"
         id={data.id + "top"}
         style={{
@@ -106,12 +106,37 @@ const ObjectItem = ({ data }) => {
       />
       <Handle
         type="target"
+        isConnectable={true}
+        position="top"
+        id={data.id + "top"}
+        style={{
+          width: "10px",
+          height: "10px",
+          background: "#1890ff",
+        }}
+      />
+      <Handle
+        isConnectable={true}
         position="left"
         id={data.id + "left"}
         style={{ width: "10px", height: "10px", background: "#1890ff" }}
       />
       <Handle
         type="target"
+        isConnectable={true}
+        position="left"
+        id={data.id + "left"}
+        style={{ width: "10px", height: "10px", background: "#1890ff" }}
+      />
+      <Handle
+        isConnectable={true}
+        position="right"
+        id={data.id + "right"}
+        style={{ width: "10px", height: "10px", background: "#1890ff" }}
+      />
+      <Handle
+        type="target"
+        isConnectable={true}
         position="right"
         id={data.id + "right"}
         style={{ width: "10px", height: "10px", background: "#1890ff" }}
@@ -153,7 +178,14 @@ const ObjectItem = ({ data }) => {
         />
       )}
       <Handle
-        type="source"
+        isConnectable={true}
+        position="bottom"
+        id={data.id + "bot"}
+        style={{ width: "10px", height: "10px", background: "#1890ff" }}
+      />
+      <Handle
+        type="target"
+        isConnectable={true}
         position="bottom"
         id={data.id + "bot"}
         style={{ width: "10px", height: "10px", background: "#1890ff" }}
