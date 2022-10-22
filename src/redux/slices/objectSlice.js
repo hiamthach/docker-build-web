@@ -100,16 +100,7 @@ export const exportThunk = createAsyncThunk(
     console.log("Connections: ", edges);
     Swal.fire(
       "Export Success",
-      `Objects: ${
-        objects.length > 0 ? objects.map((object) => object.name).join(", ") : 0
-      }
-      <br>
-      Connections: ${
-        edges.length > 0
-          ? edges.map((edge) => `${edge.from} - ${edge.to}`).join(", ")
-          : 0
-      }
-      `,
+
       "success"
     );
     return data;
