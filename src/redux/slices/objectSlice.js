@@ -98,11 +98,7 @@ export const exportThunk = createAsyncThunk(
     const edges = thunkAPI.getState().objects.edges;
     console.log("Objects: ", objects);
     console.log("Connections: ", edges);
-    Swal.fire(
-      "Export Success",
-
-      "success"
-    );
+    Swal.fire("Export Success", "", "success");
     return data;
   }
 );
