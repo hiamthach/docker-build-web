@@ -14,6 +14,7 @@ const objectSlice = createSlice({
     builder
       .addCase(deleteAllThunk.fulfilled, (state, action) => {
         state.objectList = [];
+        state.edges = [];
       })
       .addCase(addObjectThunk.fulfilled, (state, { payload }) => {
         state.objectList.push(payload);

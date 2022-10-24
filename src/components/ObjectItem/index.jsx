@@ -186,9 +186,14 @@ const ObjectItem = ({ data }) => {
                   onBlur={handleDoneInput}
                   onKeyDown={handleDoneInput}
                   onChange={handleInputChange}
+                  onMouseDown={(e) => {
+                    e.stopPropagation();
+                  }}
                 />
               ) : (
-                <span className="object-item__name">{data.name}</span>
+                <span className="object-item__name">
+                  {data.name || "<name>"}
+                </span>
               )}
             </div>
           </div>
