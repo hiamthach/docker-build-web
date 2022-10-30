@@ -1,0 +1,12 @@
+@use "../../../assets/styles/" as *;
+
+.configure-router-modal__side {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  h2 {
+    font-size: 18px;
+    color: $primary-color;
+  }
+}

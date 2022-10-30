@@ -9,11 +9,11 @@ export const listType = [
     name: "Router",
     img: routerImg,
   },
-  {
-    key: "switch",
-    name: "Switch",
-    img: switchImg,
-  },
+  // {
+  //   key: "switch",
+  //   name: "Switch",
+  //   img: switchImg,
+  // },
   {
     key: "end-device",
     name: "End device",
@@ -26,8 +26,8 @@ export const renderIcon = (key) => {
   switch (key) {
     case "router":
       return routerImg;
-    case "switch":
-      return switchImg;
+    // case "switch":
+    //   return switchImg;
     case "end-device":
       return endDeviceImg;
     default:

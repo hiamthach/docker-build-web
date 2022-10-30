@@ -79,16 +79,7 @@ export const deleteAllThunk = createAsyncThunk(
 export const updateEdgesThunk = createAsyncThunk(
   "object/updateEdges",
   async (data) => {
-    if (data.length > 0) {
-      return data.map((edge) => {
-        return {
-          from: edge.source,
-          to: edge.target,
-        };
-      });
-    } else {
-      return [];
-    }
+    return data.length > 0 ? data : [];
   }
 );
 
@@ -99,7 +90,19 @@ export const exportThunk = createAsyncThunk(
     const edges = thunkAPI.getState().objects.edges;
     console.log("Objects: ", objects);
     console.log("Connections: ", edges);
-    Swal.fire("Export Success", "", "success");
+    // const fileData = JSON.stringify(objects);
+    // const blob = new Blob([fileData], { type: "text/plain" });
+    // const url = URL.createObjectURL(blob);
+    // const link = document.createElement("a");
+    // link.download = "export.txt";
+    // link.href = url;
+    // link.click();
+
+    Swal.fire({
+      title: "Export Success",
+      icon: "success",
+      // html: `<a href=${url} download="export.txt">Download file</a>`,
+    });
     return data;
   }
 );

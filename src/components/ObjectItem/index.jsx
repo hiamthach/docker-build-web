@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 
 //styles
 import "./styles.scss";
@@ -6,13 +6,14 @@ import { Popover } from "antd";
 import { SettingOutlined, DeleteOutlined } from "@ant-design/icons";
 
 //Component
-import ConfigureModal from "../Modal/ConfigureModal";
+import ConfigureDeviceModal from "../Modal/ConfigureDeviceModal";
+import ConfigureRouterModal from "../Modal/ConfigureRouterModal";
 
 //utils
 import { renderIcon } from "../../utils/index";
 
 //Redux
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   deleteObjectThunk,
   updateObjectThunk,
@@ -26,7 +27,13 @@ const ObjectItem = ({ data }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [status, setStatus] = useState(data.status); //Trạng thái của Object(loading: sẽ chỉnh được tên, idle: thì bình thường)
   const [nameValue, setNameValue] = useState(data.name);
+  const [listHandlePos, setListHandlePos] = useState(
+    data.type !== "router"
+      ? ["left", "right", "top", "bottom"]
+      : ["left", "right"]
+  );
   const dispatch = useDispatch();
+  const edges = useSelector((state) => state.objects.edges);
 
   //Khi click chuột phải sẽ đổi trạng thái của pop
   const handleRightMouse = (e) => {
@@ -79,15 +86,14 @@ const ObjectItem = ({ data }) => {
   const PopoverContent = () => {
     return (
       <div className="object-item__popover">
-        {data.type === "end-device" && (
-          <div
-            className="object-item__popover--item object-item__popover--item-configure"
-            onClick={handleConfigure}
-          >
-            <SettingOutlined />
-            <span>Configure</span>
-          </div>
-        )}
+        <div
+          className="object-item__popover--item object-item__popover--item-configure"
+          onClick={handleConfigure}
+        >
+          <SettingOutlined />
+          <span>Configure</span>
+        </div>
+
         <div
           className="object-item__popover--item object-item__popover--item-delete"
           onClick={handleDelete}
@@ -99,72 +105,84 @@ const ObjectItem = ({ data }) => {
     );
   };
 
+  const renderHandle = () => {
+    return listHandlePos.map((pos) => {
+      return (
+        <div key={pos + "-" + data.id}>
+          <Handle
+            isConnectable={true}
+            position={pos}
+            id={data.id + "-" + pos}
+            style={{
+              width: "10px",
+              height: "10px",
+              background: "#1890ff",
+            }}
+          />
+          <Handle
+            type="target"
+            isConnectable={true}
+            position={pos}
+            id={data.id + "-" + pos}
+            style={{
+              width: "10px",
+              height: "10px",
+              background: "#1890ff",
+            }}
+          />
+        </div>
+      );
+    });
+  };
+
+  const renderConfigureModal = () => {
+    switch (data.type) {
+      case "end-device":
+        return (
+          <ConfigureDeviceModal
+            setIsModalOpen={setIsModalOpen}
+            isModalOpen={isModalOpen}
+            data={data}
+          />
+        );
+      case "router":
+        return (
+          <ConfigureRouterModal
+            setIsModalOpen={setIsModalOpen}
+            isModalOpen={isModalOpen}
+            data={data}
+          />
+        );
+      default:
+        return;
+    }
+  };
+
+  useEffect(() => {
+    if (data.type === "end-device") {
+      const edge = edges.find(
+        (edge) => edge.source === data.id || edge.target === data.id
+      );
+      if (edge) {
+        const obj = {
+          [edge.sourceHandle.split("-")[0]]: edge.sourceHandle.split("-")[1],
+          [edge.targetHandle.split("-")[0]]: edge.targetHandle.split("-")[1],
+        };
+
+        setListHandlePos([obj[data.id]]);
+      } else {
+        setListHandlePos(["left", "right", "top", "bottom"]);
+      }
+    }
+  }, [edges]);
+
   return (
     <>
       {/* Tất cả các phần Handle này là các dấu chấm để kết nối thì mỗi dấu sẽ có position.
         Handle nào có type="target" có nghĩa là hàm đó có thể kéo vào.
         Xem thêm Handle ở Link React Flow ở trang README 
       */}
-      <Handle
-        isConnectable={true}
-        position="top"
-        id={data.id + "top"}
-        style={{
-          width: "10px",
-          height: "10px",
-          background: "#1890ff",
-        }}
-      />
-      <Handle
-        type="target"
-        isConnectable={true}
-        position="top"
-        id={data.id + "top"}
-        style={{
-          width: "10px",
-          height: "10px",
-          background: "#1890ff",
-        }}
-      />
-      <Handle
-        isConnectable={true}
-        position="left"
-        id={data.id + "left"}
-        style={{ width: "10px", height: "10px", background: "#1890ff" }}
-      />
-      <Handle
-        type="target"
-        isConnectable={true}
-        position="left"
-        id={data.id + "left"}
-        style={{ width: "10px", height: "10px", background: "#1890ff" }}
-      />
-      <Handle
-        isConnectable={true}
-        position="right"
-        id={data.id + "right"}
-        style={{ width: "10px", height: "10px", background: "#1890ff" }}
-      />
-      <Handle
-        type="target"
-        isConnectable={true}
-        position="right"
-        id={data.id + "right"}
-        style={{ width: "10px", height: "10px", background: "#1890ff" }}
-      />
-      <Handle
-        isConnectable={true}
-        position="bottom"
-        id={data.id + "bot"}
-        style={{ width: "10px", height: "10px", background: "#1890ff" }}
-      />
-      <Handle
-        type="target"
-        isConnectable={true}
-        position="bottom"
-        id={data.id + "bot"}
-        style={{ width: "10px", height: "10px", background: "#1890ff" }}
-      />
+      {renderHandle()}
 
       <div className="object-item" onContextMenu={handleRightMouse}>
         <Popover
@@ -200,13 +218,7 @@ const ObjectItem = ({ data }) => {
         </Popover>
       </div>
 
-      {data.type === "end-device" && (
-        <ConfigureModal
-          isModalOpen={isModalOpen}
-          setIsModalOpen={setIsModalOpen}
-          data={data}
-        />
-      )}
+      {renderConfigureModal()}
     </>
   );
 };
