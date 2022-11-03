@@ -1,6 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import Swal from "sweetalert2";
+import JSZip from "jszip";
+import FileSaver from "file-saver";
+
+import {
+  dockerfileTemplate,
+  renderServiceTxt,
+  serviceTemplate,
+} from "../../utils";
 
 const objectSlice = createSlice({
   name: "objectSlice",
@@ -90,18 +98,22 @@ export const exportThunk = createAsyncThunk(
     const edges = thunkAPI.getState().objects.edges;
     console.log("Objects: ", objects);
     console.log("Connections: ", edges);
-    // const fileData = JSON.stringify(objects);
-    // const blob = new Blob([fileData], { type: "text/plain" });
-    // const url = URL.createObjectURL(blob);
-    // const link = document.createElement("a");
-    // link.download = "export.txt";
-    // link.href = url;
-    // link.click();
+    const zip = new JSZip();
+    //Ubuntu
+    objects
+      .filter((object) => object.configure.os === "ubuntu")
+      .forEach((object) => {
+        const zipFolder = zip.folder(`${object.name}`);
+        zipFolder.file("dockerfile", dockerfileTemplate(object));
+      });
+    zip.file("service", renderServiceTxt(objects));
+    zip.generateAsync({ type: "blob" }).then(function (content) {
+      FileSaver.saveAs(content, "docker.zip");
+    });
 
     Swal.fire({
       title: "Export Success",
       icon: "success",
-      // html: `<a href=${url} download="export.txt">Download file</a>`,
     });
     return data;
   }

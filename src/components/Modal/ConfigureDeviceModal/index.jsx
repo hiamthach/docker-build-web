@@ -11,14 +11,14 @@ import { updateObjectThunk } from "../../../redux/slices/objectSlice";
 const { Option } = Select;
 
 const CheckboxGroup = Checkbox.Group;
-const serviceOptions = ["HTTP", "FTP", "TELNET", "MY SQL"];
-const osList = ["Window", "Ubuntu", "Alpine", "Linux"];
+const serviceOptions = ["MySQL", "HTTP", "DNS", "FTP"];
+const osList = ["Ubuntu", "Alpine", "Linux"];
 const subnetList = ["255.255.0.0(/16)", "255.255.255.0(/24)"];
 
 const ConfigureDeviceModal = ({ isModalOpen, setIsModalOpen, data }) => {
   const dispatch = useDispatch();
   const [osValue, setOSValue] = useState(
-    data.configure.os ? data.configure.os : "window"
+    data.configure.os ? data.configure.os : "ubuntu"
   );
   const [subnetValue, setSubnetValue] = useState(
     data.configure.subnet ? data.configure.subnet : subnetList[0]
