@@ -22,7 +22,6 @@ import {
   addObjectThunk,
 } from "../../redux/slices/objectSlice.js";
 
-//
 import { listType } from "../../utils/index";
 import { alertConfirmation } from "../../utils/alert";
 

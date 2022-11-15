@@ -29,8 +29,8 @@ const ObjectItem = ({ data }) => {
   const [nameValue, setNameValue] = useState(data.name);
   const [listHandlePos, setListHandlePos] = useState(
     data.type !== "router"
-      ? ["left", "right", "top", "bottom"]
-      : ["left", "right"]
+      ? ["left", "right", "top", "bottom"] //Nếu là pc thì 4 chấm
+      : ["left", "right"] // Nếu là router thì 2 chấm trái phải
   );
   const dispatch = useDispatch();
   const edges = useSelector((state) => state.objects.edges);
@@ -105,7 +105,9 @@ const ObjectItem = ({ data }) => {
     );
   };
 
+  //Xử lý các chấm
   const renderHandle = () => {
+    // render theo list handle ở trên
     return listHandlePos.map((pos) => {
       return (
         <div key={pos + "-" + data.id}>
@@ -135,6 +137,7 @@ const ObjectItem = ({ data }) => {
     });
   };
 
+  // Render modal đúng với loại object
   const renderConfigureModal = () => {
     switch (data.type) {
       case "end-device":
@@ -159,11 +162,14 @@ const ObjectItem = ({ data }) => {
   };
 
   useEffect(() => {
+    // Nếu đã là end device khi đã connect
     if (data.type === "end-device") {
       const edge = edges.find(
         (edge) => edge.source === data.id || edge.target === data.id
       );
       if (edge) {
+        // Soure hay target sẽ có dạng id-left hoặc <id>-right -> Khi split như bên dưới -> <id>: left chẳng hạn
+        // -> Khi đó sẽ bt đc vị trí
         const obj = {
           [edge.sourceHandle.split("-")[0]]: edge.sourceHandle.split("-")[1],
           [edge.targetHandle.split("-")[0]]: edge.targetHandle.split("-")[1],
@@ -195,6 +201,7 @@ const ObjectItem = ({ data }) => {
           <div className="object-item__main">
             <img src={renderIcon(data.type)} alt="" />
             <div className="object-item__footer" onDoubleClick={handleDblClick}>
+              {/* Check xem có tên hay chưa nếu chưa thì <name> */}
               {status === "loading" ? (
                 <input
                   type="text"

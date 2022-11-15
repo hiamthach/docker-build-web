@@ -12,11 +12,14 @@ const { Option } = Select;
 
 const subnetList = ["255.255.0.0(/16)", "255.255.255.0(/24)"];
 
+// Left or Right side in Router Modal
 const RouterModalSide = ({ data, side, setData }) => {
+  // Subnet State
   const [subnetValue, setSubnetValue] = useState(
     data.subnet ? data.subnet : subnetList[0]
   );
 
+  // IP State
   const [IPList, setIPList] = useState(
     data.IP ? data.IP : [null, null, null, null]
   );
@@ -108,11 +111,13 @@ const RouterModalSide = ({ data, side, setData }) => {
 };
 
 const ConfigureRouterModal = ({ isModalOpen, setIsModalOpen, data }) => {
+  // Left side Data State
   const [leftData, setLeftData] = useState(
     data.configure.left
       ? data.configure.left
       : { IP: [null, null, null, null], subnet: subnetList[0] }
   );
+  // Right side Data State
   const [rightData, setRightData] = useState(
     data.configure.right
       ? data.configure.right
@@ -144,14 +149,16 @@ const ConfigureRouterModal = ({ isModalOpen, setIsModalOpen, data }) => {
       (edge) => edge.source === data.id || edge.target === data.id
     );
 
+    // Kiểm tra xem là trong list connections có connect bên trái hay bên phải không
     if (edgeList.length > 0) {
       const sides = [];
+      // Tìm trái
       const indexLeft = edgeList.findIndex(
         (edge) =>
           edge.sourceHandle === data.id + "-left" ||
           edge.targetHandle === data.id + "-left"
       );
-
+      // Tìm phải
       const indexRight = edgeList.findIndex(
         (edge) =>
           edge.sourceHandle === data.id + "-right" ||
@@ -165,6 +172,7 @@ const ConfigureRouterModal = ({ isModalOpen, setIsModalOpen, data }) => {
       if (indexRight >= 0) {
         sides.push("right");
       }
+      // Render dựa trên trái phải có hay không
       return sides.map((side, index) => {
         return (
           <RouterModalSide

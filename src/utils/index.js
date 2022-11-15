@@ -33,9 +33,10 @@ export const renderIcon = (key) => {
       return;
   }
 };
-
+// Tạo 1 template sẵn của dockerfile
 export const dockerfileTemplate = (object) => {
   const renderServices = () => {
+    //Object để tương ứng vs loại service đã chọn
     const serviceObj = {
       MySQL: "mysql-server",
 
@@ -45,6 +46,7 @@ export const dockerfileTemplate = (object) => {
 
       FTP: "vsftpd",
     };
+    // Render theo list service vd MySQL --> mysql-server
     const newList = object.configure?.services.map((value) => {
       return `RUN apt-get install -y ${serviceObj[value]}`;
     });
@@ -52,6 +54,7 @@ export const dockerfileTemplate = (object) => {
     return newList.join("\n");
   };
 
+  //Template sẵn chỉ render thêm các dòng
   const template = `
 FROM ubuntu:latest
 
@@ -72,21 +75,7 @@ ${renderServices()}
 
   return template;
 };
-
-export const renderServiceTxt = (objects) => {
-  const newObject = objects
-    .filter((object) => object.type === "end-device")
-    .map((object, index) => {
-      return serviceTemplate(object, index + 1);
-    });
-
-  return `
-version: '2.2'
-services:   
-${newObject.join("\n")} 
-    `;
-};
-
+// Tạo 1 template sẵn về service.txt
 export const serviceTemplate = (data, index) => {
   const template = `
   # PC${index}
@@ -104,4 +93,19 @@ export const serviceTemplate = (data, index) => {
   `;
 
   return template;
+};
+// Render file service
+export const renderServiceTxt = (objects) => {
+  const newObject = objects
+    //Filter ra các end device và truyền data vào template có sẵn để render
+    .filter((object) => object.type === "end-device")
+    .map((object, index) => {
+      return serviceTemplate(object, index + 1);
+    });
+
+  return `
+version: '2.2'
+services:   
+${newObject.join("\n")} 
+    `;
 };

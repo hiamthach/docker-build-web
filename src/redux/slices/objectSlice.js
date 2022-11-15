@@ -4,11 +4,7 @@ import Swal from "sweetalert2";
 import JSZip from "jszip";
 import FileSaver from "file-saver";
 
-import {
-  dockerfileTemplate,
-  renderServiceTxt,
-  serviceTemplate,
-} from "../../utils";
+import { dockerfileTemplate, renderServiceTxt } from "../../utils";
 
 const objectSlice = createSlice({
   name: "objectSlice",
@@ -98,15 +94,21 @@ export const exportThunk = createAsyncThunk(
     const edges = thunkAPI.getState().objects.edges;
     console.log("Objects: ", objects);
     console.log("Connections: ", edges);
+    // Tạo 1 zip folder
     const zip = new JSZip();
     //Ubuntu
     objects
+      // Lọc các object Ubuntu
       .filter((object) => object.configure.os === "ubuntu")
       .forEach((object) => {
+        // Tạo folder tên của object
         const zipFolder = zip.folder(`${object.name}`);
+        // Truyền data vào template vào tạo dockerfile
         zipFolder.file("dockerfile", dockerfileTemplate(object));
       });
+    // Tạo file service
     zip.file("service", renderServiceTxt(objects));
+    // Download zip file về
     zip.generateAsync({ type: "blob" }).then(function (content) {
       FileSaver.saveAs(content, "docker.zip");
     });

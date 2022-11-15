@@ -1,7 +1,9 @@
 # Ba con chim lẻ loi App
+
 App is created by React.
 
 ### Vừa clone source về
+
 Chạy lệnh trên terminal:
 
 - npm install -> để cài hết package cho project.
@@ -13,6 +15,7 @@ Chạy lệnh trên terminal:
 - redux -> Để quản lý các global state.
 - reactflow -> Để kéo thả các objects và connections.
 - sweetalert2 -> Để tạo các thông báo.
+- jszip -> Để tạo zip folder.
 
 ### Cấu trúc dự án:
 
@@ -24,11 +27,12 @@ Chạy lệnh trên terminal:
 6. redux: để chứa các slice của redux.
 7. utils: để chứa các hàm để tái sử dụng lại.
 
-**Trong code phần react flow thì Edges sẽ hiểu là Connections. 
+\*\*Trong code phần react flow thì Edges sẽ hiểu là Connections.
 
-**Thứ tự đọc code: App -> layout -> containers -> redux -> components, assets, utils,...
+\*\*Thứ tự đọc code: App -> layout -> containers -> redux -> components, assets, utils,...
 
 ### Link tham khảo:
-+ Ant Design Components: https://ant.design/components/overview/
-+ React Flow: https://reactflow.dev/docs/guides/uncontrolled-flow/
-+ Redux: https://redux-toolkit.js.org/tutorials/quick-start
+
+- Ant Design Components: https://ant.design/components/overview/
+- React Flow: https://reactflow.dev/docs/guides/uncontrolled-flow/
+- Redux: https://redux-toolkit.js.org/tutorials/quick-start
