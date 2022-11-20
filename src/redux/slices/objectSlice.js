@@ -130,7 +130,7 @@ export const exportThunk = createAsyncThunk(
     });
 
     // Tạo file service
-    zip.file("service", renderServiceTxt(objects));
+    zip.file("docker-compose.yaml", renderServiceTxt(objects));
     // Download zip file về
     zip.generateAsync({ type: "blob" }).then(function (content) {
       FileSaver.saveAs(content, "docker.zip");

@@ -1,5 +1,5 @@
 import MainLayout from "./layout/main";
-import "antd/dist/antd.css";
+import "antd/dist/antd.min.css";
 import "reactflow/dist/style.css";
 
 import { ReactFlowProvider } from "reactflow";

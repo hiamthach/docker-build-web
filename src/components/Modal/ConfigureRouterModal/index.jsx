@@ -10,7 +10,7 @@ import { updateObjectThunk } from "../../../redux/slices/objectSlice";
 
 const { Option } = Select;
 
-const subnetList = ["255.255.0.0(/16)", "255.255.255.0(/24)"];
+const subnetList = ["255.255.255.0(/24)"];
 
 // Left or Right side in Router Modal
 const RouterModalSide = ({ data, side, setData }) => {

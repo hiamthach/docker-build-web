@@ -197,20 +197,18 @@ RUN apt-get update && \\
 
 // Tạo 1 PC template sẵn về service.txt
 export const servicePCTemplate = (data, index) => {
-  const template = `# PC${index}
-VPC_${index}:
-image: ${data.name}
-build: 
-  context: ./
-  dockerfile: ${data.name}/dockerfile
-networks:
-${renderIP(data.configure.IP, ".x")}:
-  ipv4_address: ${renderIP(data.configure.IP)}
-cap_add:
-  - NET_ADMIN
-tty: true 
-stdin_open: true
-`;
+  const template = `VPC_${index}:
+    image: ${data.name}
+    build: 
+      context: ./
+      dockerfile: ${data.name}/dockerfile
+    networks:
+    net_${renderIP(data.configure.IP, ".x")}:
+      ipv4_address: ${renderIP(data.configure.IP)}
+    cap_add:
+      - NET_ADMIN
+    tty: true 
+    stdin_open: true`;
 
   return template;
 };
@@ -218,29 +216,29 @@ stdin_open: true
 //Tạo 1 Router template sẵn về service file
 export const serviceRouterTemplate = (data, index) => {
   const template = `Router-${index}:
-image: ${data.name}
-build: 
-  context: ./
-  dockerfile: ${data.name}/dockerfile
-networks:
-${
-  data.configure.left.status
-    ? `net_${renderIP(data.configure.left.IP, ".x")}:
-  ipv4_address: ${renderIP(data.configure.left.IP)}`
-    : ""
-}
-${
-  data.configure.right.status
-    ? `net_${renderIP(data.configure.right.IP, ".x")}:
-  ipv4_address: ${renderIP(data.configure.right.IP)}`
-    : ""
-}
-tty: true 
-stdin_open: true
-cap_add:
-  - NET_ADMIN
-tty: true 
-stdin_open: true
+    image: ${data.name}
+    build: 
+      context: ./
+      dockerfile: ${data.name}/dockerfile
+    networks:
+    ${
+      data.configure.left.status
+        ? `net_${renderIP(data.configure.left.IP, ".x")}:
+      ipv4_address: ${renderIP(data.configure.left.IP)}`
+        : ""
+    }
+    ${
+      data.configure.right.status
+        ? `net_${renderIP(data.configure.right.IP, ".x")}:
+      ipv4_address: ${renderIP(data.configure.right.IP)}`
+        : ""
+    }
+    tty: true 
+    stdin_open: true
+    cap_add:
+      - NET_ADMIN
+    tty: true 
+    stdin_open: true
 `;
 
   return template;
@@ -248,11 +246,11 @@ stdin_open: true
 //Tạo 1 Network template sẵn về service file
 export const serviceNetworkTemplate = (object) => {
   const template = `net_${renderIP(object.IP, ".x")}: 
-  driver: bridge
-  ipam:
-   config:
-     - subnet: ${renderIP(object.IP, ".0/24")} 
-       gateway: ${renderIP(object.IP, ".1")}`;
+    driver: bridge
+    ipam:
+    config:
+      - subnet: ${renderIP(object.IP, ".0/24")} 
+        gateway: ${renderIP(object.IP, ".1")}`;
   return template;
 };
 
@@ -283,15 +281,14 @@ export const renderServiceTxt = (objects) => {
       if (object.configure.right.status) {
         listNetwork.push(serviceNetworkTemplate(object.configure.right));
       }
-      return listNetwork.join("\n");
+      return listNetwork.join("\n\t");
     });
 
   return `
 version: '2.2'
 services:   
-${PCServiceRender.join("\n")}
-${RouterServiceRender.join("\n")}
+  ${PCServiceRender.join("\n\t")}
+  ${RouterServiceRender.join("\n\t")}
 networks: 
-${NetworkRender.join("\n")}
-    `;
+  ${NetworkRender.join("\n\t")}`;
 };
