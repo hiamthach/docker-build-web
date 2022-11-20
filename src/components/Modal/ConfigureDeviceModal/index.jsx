@@ -12,7 +12,7 @@ const { Option } = Select;
 
 const CheckboxGroup = Checkbox.Group;
 const serviceOptions = ["MySQL", "HTTP", "DNS", "FTP"];
-const osList = ["Ubuntu", "Alpine", "Linux"];
+const osList = ["Ubuntu", "Alpine", "Kali"];
 const subnetList = ["255.255.0.0(/16)", "255.255.255.0(/24)"];
 
 const ConfigureDeviceModal = ({ isModalOpen, setIsModalOpen, data }) => {

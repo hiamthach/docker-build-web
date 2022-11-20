@@ -4,7 +4,13 @@ import Swal from "sweetalert2";
 import JSZip from "jszip";
 import FileSaver from "file-saver";
 
-import { dockerfileTemplate, renderServiceTxt } from "../../utils";
+import {
+  dockerfileUbuntuTemplate,
+  dockerfileKaliTemplate,
+  dockerfileAlpineTemplate,
+  dockerfileRouterTemplate,
+  renderServiceTxt,
+} from "../../utils";
 
 const objectSlice = createSlice({
   name: "objectSlice",
@@ -96,16 +102,33 @@ export const exportThunk = createAsyncThunk(
     console.log("Connections: ", edges);
     // Tạo 1 zip folder
     const zip = new JSZip();
-    //Ubuntu
-    objects
-      // Lọc các object Ubuntu
-      .filter((object) => object.configure.os === "ubuntu")
-      .forEach((object) => {
-        // Tạo folder tên của object
-        const zipFolder = zip.folder(`${object.name}`);
-        // Truyền data vào template vào tạo dockerfile
-        zipFolder.file("dockerfile", dockerfileTemplate(object));
-      });
+
+    objects.forEach((object) => {
+      // Tạo folder tên của object
+      const zipFolder = zip.folder(`${object.name}`);
+      // Truyền data vào template vào tạo dockerfile
+      //Tạo dockerfile cho router
+      if (object.type === "router") {
+        zipFolder.file("dockerfile", dockerfileRouterTemplate(object));
+      } else {
+        if (object.configure.os) {
+          switch (object.configure.os) {
+            case "ubuntu":
+              zipFolder.file("dockerfile", dockerfileUbuntuTemplate(object));
+              break;
+            case "kali":
+              zipFolder.file("dockerfile", dockerfileKaliTemplate(object));
+              break;
+            case "alpine":
+              zipFolder.file("dockerfile", dockerfileAlpineTemplate(object));
+              break;
+            default:
+              break;
+          }
+        }
+      }
+    });
+
     // Tạo file service
     zip.file("service", renderServiceTxt(objects));
     // Download zip file về

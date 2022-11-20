@@ -28,6 +28,7 @@ const RouterModalSide = ({ data, side, setData }) => {
     setSubnetValue(value);
     setData({
       ...data,
+      status: true,
       subnet: value,
     });
   };
@@ -38,6 +39,7 @@ const RouterModalSide = ({ data, side, setData }) => {
     setIPList(newList);
     setData({
       ...data,
+      status: true,
       IP: newList,
     });
   };
@@ -115,13 +117,15 @@ const ConfigureRouterModal = ({ isModalOpen, setIsModalOpen, data }) => {
   const [leftData, setLeftData] = useState(
     data.configure.left
       ? data.configure.left
-      : { IP: [null, null, null, null], subnet: subnetList[0] }
+      : // Trạng thái mặc định chưa chỉnh sửa khi chỉnh sửa r thì status -> true
+        { IP: [null, null, null, null], subnet: subnetList[0], status: false }
   );
   // Right side Data State
   const [rightData, setRightData] = useState(
     data.configure.right
       ? data.configure.right
-      : { IP: [null, null, null, null], subnet: subnetList[0] }
+      : // Trạng thái mặc định chưa chỉnh sửa khi chỉnh sửa r thì status -> true
+        { IP: [null, null, null, null], subnet: subnetList[0], status: false }
   );
 
   const edges = useSelector((state) => state.objects.edges);
