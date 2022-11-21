@@ -280,14 +280,14 @@ export const renderServiceTxt = (objects) => {
       if (object.configure.right.status) {
         listNetwork.push(serviceNetworkTemplate(object.configure.right));
       }
-      return listNetwork.join("\n\t");
+      return listNetwork.join("\n  ");
     });
 
   return `
 version: '2.2'
 services:   
-  ${PCServiceRender.join("\n\t")}
-  ${RouterServiceRender.join("\n\t")}
+  ${PCServiceRender.join("\n  ")}
+  ${RouterServiceRender.join("\n  ")}
 networks: 
-  ${NetworkRender.join("\n\t")}`;
+  ${NetworkRender.join("\n  ")}`;
 };
