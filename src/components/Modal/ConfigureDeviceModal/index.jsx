@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import CusModal from "..";
 
-import { Button, Select, Checkbox, Row, Col, InputNumber, Form } from "antd";
+import { Button, Select, Checkbox, Row, Col, InputNumber } from "antd";
 import "./styles.scss";
 
 import { useDispatch } from "react-redux";

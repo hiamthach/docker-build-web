@@ -203,8 +203,8 @@ export const servicePCTemplate = (data, index) => {
       context: ./
       dockerfile: ${data.name}/dockerfile
     networks:
-    net_${renderIP(data.configure.IP, ".x")}:
-      ipv4_address: ${renderIP(data.configure.IP)}
+      net_${renderIP(data.configure.IP, ".x")}:
+        ipv4_address: ${renderIP(data.configure.IP)}
     cap_add:
       - NET_ADMIN
     tty: true 
@@ -223,14 +223,14 @@ export const serviceRouterTemplate = (data, index) => {
     networks:
     ${
       data.configure.left.status
-        ? `net_${renderIP(data.configure.left.IP, ".x")}:
-      ipv4_address: ${renderIP(data.configure.left.IP)}`
+        ? `  net_${renderIP(data.configure.left.IP, ".x")}:
+        ipv4_address: ${renderIP(data.configure.left.IP)}`
         : ""
     }
     ${
       data.configure.right.status
-        ? `net_${renderIP(data.configure.right.IP, ".x")}:
-      ipv4_address: ${renderIP(data.configure.right.IP)}`
+        ? `  net_${renderIP(data.configure.right.IP, ".x")}:
+        ipv4_address: ${renderIP(data.configure.right.IP)}`
         : ""
     }
     tty: true 
@@ -238,8 +238,7 @@ export const serviceRouterTemplate = (data, index) => {
     cap_add:
       - NET_ADMIN
     tty: true 
-    stdin_open: true
-`;
+    stdin_open: true`;
 
   return template;
 };
