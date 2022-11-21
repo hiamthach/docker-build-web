@@ -236,9 +236,7 @@ export const serviceRouterTemplate = (data, index) => {
     tty: true 
     stdin_open: true
     cap_add:
-      - NET_ADMIN
-    tty: true 
-    stdin_open: true`;
+      - NET_ADMIN`;
 
   return template;
 };
