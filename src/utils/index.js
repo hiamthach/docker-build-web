@@ -198,7 +198,7 @@ RUN apt-get update && \\
 // Tạo 1 PC template sẵn về service.txt
 export const servicePCTemplate = (data, index) => {
   const template = `VPC_${index}:
-    image: ${data.name}
+    image: ${data.name?.toLowerCase()}
     build: 
       context: ./
       dockerfile: ${data.name}/dockerfile
@@ -216,7 +216,7 @@ export const servicePCTemplate = (data, index) => {
 //Tạo 1 Router template sẵn về service file
 export const serviceRouterTemplate = (data, index) => {
   const template = `Router-${index}:
-    image: ${data.name}
+    image: ${data.name?.toLowerCase()}
     build: 
       context: ./
       dockerfile: ${data.name}/dockerfile
@@ -245,7 +245,7 @@ export const serviceNetworkTemplate = (object) => {
   const template = `net_${renderIP(object.IP, ".x")}: 
     driver: bridge
     ipam:
-    config:
+     config:
       - subnet: ${renderIP(object.IP, ".0/24")} 
         gateway: ${renderIP(object.IP, ".1")}`;
   return template;
