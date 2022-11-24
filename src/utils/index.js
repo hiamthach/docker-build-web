@@ -267,19 +267,27 @@ export const renderServiceTxt = (objects) => {
       return serviceRouterTemplate(object, index + 1);
     });
 
-  const NetworkRender = objects
+  let combineNetwork = {};
+  const listNetwork = objects
     //Filter ra router để lấy các configure bên trái và bên phải để render ra router
-    .filter((object) => object.type === "router")
-    .map((object) => {
-      const listNetwork = [];
-      if (object.configure.left.status) {
-        listNetwork.push(serviceNetworkTemplate(object.configure.left));
-      }
-      if (object.configure.right.status) {
-        listNetwork.push(serviceNetworkTemplate(object.configure.right));
-      }
-      return listNetwork.join("\n  ");
-    });
+    .filter((object) => object.type === "router");
+
+  // Thêm vào 1 key dạng là 1_2_3_x để nếu như trùng key thì sẽ đè lên nhau và sẽ ko bị trùng khi render ra nx
+  for (let i = 0; i < listNetwork.length; i++) {
+    if (listNetwork[i].configure.left.status) {
+      const left = listNetwork[i].configure.left;
+      combineNetwork[renderIP(left.IP, ".x").replaceAll(".", "_")] = left;
+    }
+    if (listNetwork[i].configure.right.status) {
+      const right = listNetwork[i].configure.right;
+      combineNetwork[renderIP(right.IP, ".x").replaceAll(".", "_")] = right;
+    }
+  }
+
+  //Render theo từng key
+  const NetworkRender = Object.keys(combineNetwork).map((key) => {
+    return serviceNetworkTemplate(combineNetwork[key]);
+  });
 
   return `
 version: '2.2'
